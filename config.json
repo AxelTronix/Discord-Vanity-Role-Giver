@@ -1,0 +1,6 @@
+{
+    "token": "discord token",
+    "ServerID": "GUILD",
+    "Vanity": ".gg/whatever",
+    "PrioRole": "ID ROLE"
+}
