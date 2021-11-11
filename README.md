@@ -1,5 +1,7 @@
-# Discord-Vanity-Role-Giver
 
+# How does it work?
+Use your brain :)
 
+### Installation
+1. Use your brain :)
 
-Use your brain thats it
