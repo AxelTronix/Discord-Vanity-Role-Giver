@@ -1,5 +1,5 @@
 const discord = require("discord.js", "discord-rpc");
-const client = new discord.Client()
+const client = new discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] })
 
 
 let prefixs = "!";
