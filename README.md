@@ -1,2 +1,5 @@
 # Discord-Vanity-Role-Giver
-s
+
+
+
+Use your brain thats it
