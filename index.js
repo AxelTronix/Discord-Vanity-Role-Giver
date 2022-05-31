@@ -1,50 +1,62 @@
+const { Client, Intents } = require('discord.js');
 const discord = require("discord.js", "discord-rpc");
-const client = new discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] })
+const client = new Client({ 
+    intents: [
+        Intents.FLAGS.GUILDS,
+        Intents.FLAGS.GUILD_MESSAGES,
+        Intents.FLAGS.GUILD_PRESENCES,
+        Intents.FLAGS.GUILD_MEMBERS //also enable in discord developer portal
+    ] 
+})
 
 
-let prefixs = "!";
+
 const {
     token,
     ServerID,
-    Vanity,
-    PrioRole
+    RoleID,
+    channelID,
+    Vanity
 } = require("./config.json")
 
 
+client.on('presenceUpdate', (oldMember, newMember) => {
+        newMember.activities.forEach(async activity => {
+            if (activity.state === null) return;
 
+            const member = await client.guilds.cache.get(ServerID).members.fetch(newMember.userId)
+            const role = await client.guilds.cache.get(ServerID).roles.fetch(RoleID)
 
+            if (activity.type === 'CUSTOM' && activity.state.includes(Vanity)) {
+                const embed = new discord.MessageEmbed()
+                    .setColor("#3f75e0")
+                    .setAuthor({name: "CrounicRP",})
+                    .setDescription(`${newMember.user.username} has added the vanity (.gg/crounic) to their account, their role has been added.`)
 
-  setInterval(function() {
-    client.guilds.cache.get(ServerID).members.fetch().then((members) => {
-    members.forEach(async user => {
-      user.presence.activities.forEach(async activity => {
-        // console.log(activity)
+                    .setFooter({text: "Crounic RP • discord.gg/Crounic"})
 
-        if (activity.type === 'CUSTOM_STATUS' && activity.state.includes(Vanity) && !user.roles.cache.has(PrioRole)) {
-          await user.roles.add(PrioRole).catch(() => {})
+                member.roles.add(role)
 
-          console.log(`(ROLE ADDED (CUSTOM STATUS INCLUDES ${Vanity})) ${user.user.tag} => ${activity}: ${activity.state}`)
+                client.channels.cache.get(channelID).send({embeds: [embed]});
+            }
 
-        } else if (activity.type === 'CUSTOM_STATUS' && !activity.state.includes(Vanity) && user.roles.cache.has(PrioRole)) {
-          await user.roles.remove(PrioRole).catch(() => {})
+            if (activity.type === 'CUSTOM' && member.roles.cache.has(RoleID) && !activity.state.includes(Vanity)) {
+                member.roles.remove(role)
 
-          console.log(`(ROLE REMOVED (NO CUSTOM STATUS CHANGED)) ${user.user.tag} => ${activity}: ${activity.state}`)
+                const embed = new discord.MessageEmbed()
+                    .setColor("#E74C3C")
+                    .setAuthor({name: "CrounicRP",})
+                    .setDescription(`${newMember.user.username} has removed the vanity (.gg/crounic) from their account, their role has been removed.`)
 
-        } else if (activity.type !=  'Custom Status' && user.roles.cache.has(PrioRole)) {
-          await user.roles.remove(PrioRole).catch((error) => {})
+                    .setFooter({text: "Crounic RP • discord.gg/Crounic"})
+                client.channels.cache.get(channelID).send({embeds: [embed]});
+            }
+        })
+    }
+);
 
-          console.log(`(ROLE REMOVED (NO CUSTOM STATUS DETECTED)) ${user.user.tag} => ${activity}: ${activity.state}`)
-
-
-        } else if (activity.type === 'CUSTOM_STATUS' && !activity.state.includes("") && user.roles.cache.has(PrioRole)) {
-          await user.roles.remove(PrioRole).catch((error) => {})
-      }                                   
-    })
-  })
-    })
-        }, 1200 * 1000)
-
-
+client.on("ready", () => {
+    console.log("Bot is ready - Tronix")
+})
 
 client.login(token)
-
