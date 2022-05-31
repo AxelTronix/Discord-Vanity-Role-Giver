@@ -27,8 +27,7 @@ client.on('presenceUpdate', (oldMember, newMember) => {
             const member = await client.guilds.cache.get(ServerID).members.fetch(newMember.userId)
             const role = await client.guilds.cache.get(ServerID).roles.fetch(RoleID)
 
-            if (activity.type === 'CUSTOM' && activity.state.includes(Vanity)) {
-                if (member.roles.cache.has(RoleID)) return;
+            if (activity.type === 'CUSTOM' && activity.state.includes(Vanity) && !member.roles.cache.has(RoleID)) {
                 const embed = new discord.MessageEmbed()
                     .setColor("#3f75e0")
                     .setAuthor({name: "CrounicRP",})
