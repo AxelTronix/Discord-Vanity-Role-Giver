@@ -2,6 +2,8 @@
 # How does it work?
 Use your brain :)
 
+### Preview
+![image](https://cdn.discordapp.com/attachments/890350714105237504/981324392011288656/unknown.png)
 ### Installation
 
 Enable server intents in discord developer portal
