@@ -1,11 +1,11 @@
-const { Client, Intents } = require('discord.js');
+const { Client, GatewayIntentBits } = require('discord.js');
 const discord = require("discord.js", "discord-rpc");
 const client = new Client({ 
     intents: [
-        Intents.FLAGS.GUILDS,
-        Intents.FLAGS.GUILD_MESSAGES,
-        Intents.FLAGS.GUILD_PRESENCES,
-        Intents.FLAGS.GUILD_MEMBERS //also enable in discord developer portal
+        GatewayIntentBits.GUILDS,
+        GatewayIntentBits.GUILD_MESSAGES,
+        GatewayIntentBits.GUILD_PRESENCES,
+        GatewayIntentBits.GUILD_MEMBERS //also enable in discord developer portal
     ] 
 })
 
